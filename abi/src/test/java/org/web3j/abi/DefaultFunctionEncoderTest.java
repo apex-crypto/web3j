@@ -57,6 +57,24 @@ public class DefaultFunctionEncoderTest {
     }
 
     @Test
+    public void testBuildMessageSignatureWithComplexTuple() {
+        AbiV2TestFixture.Nazz nazz = new AbiV2TestFixture.Nazz(
+                Arrays.asList(
+                        new AbiV2TestFixture.Nazzy(Arrays.asList(new AbiV2TestFixture.Foo("a", "b"),
+                                new AbiV2TestFixture.Foo("c", "d"))),
+                        new AbiV2TestFixture.Nazzy(Arrays.asList(new AbiV2TestFixture.Foo("e", "f"),
+                                new AbiV2TestFixture.Foo("g", "key")))
+                ),
+                BigInteger.valueOf(100L)
+        );
+
+        assertEquals(
+                "someFunc((((string,string)[])[],uint256))",
+                FunctionEncoder.buildMethodSignature("someFunc", Arrays.asList(nazz))
+        );
+    }
+
+    @Test
     public void testEncodeConstructorEmpty() {
         assertEquals("", FunctionEncoder.encodeConstructor(Collections.emptyList()));
     }
