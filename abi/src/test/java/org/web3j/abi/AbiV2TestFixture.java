@@ -12,22 +12,13 @@
  */
 package org.web3j.abi;
 
+import org.web3j.abi.datatypes.*;
+import org.web3j.abi.datatypes.generated.*;
+
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
-
-import org.web3j.abi.datatypes.DynamicArray;
-import org.web3j.abi.datatypes.DynamicBytes;
-import org.web3j.abi.datatypes.DynamicStruct;
-import org.web3j.abi.datatypes.Function;
-import org.web3j.abi.datatypes.StaticStruct;
-import org.web3j.abi.datatypes.Type;
-import org.web3j.abi.datatypes.Utf8String;
-import org.web3j.abi.datatypes.generated.StaticArray1;
-import org.web3j.abi.datatypes.generated.StaticArray2;
-import org.web3j.abi.datatypes.generated.StaticArray3;
-import org.web3j.abi.datatypes.generated.Uint256;
-import org.web3j.abi.datatypes.generated.Uint32;
+import java.util.List;
 
 public class AbiV2TestFixture {
 
@@ -680,20 +671,31 @@ public class AbiV2TestFixture {
         }
     }
 
+    public static class Nazzy extends DynamicStruct {
+        public List<Foo> foo;
+
+        public Nazzy(List<Foo> foo) {
+            super(new org.web3j.abi.datatypes.DynamicArray<>(Foo.class, foo));
+            this.foo = foo;
+        }
+    }
+
     public static class Nazz extends DynamicStruct {
-        public Naz naz;
+        public List<Nazzy> nazzy;
 
         public BigInteger data;
 
-        public Nazz(Naz naz, BigInteger data) {
-            super(naz, new org.web3j.abi.datatypes.generated.Uint256(data));
-            this.naz = naz;
+        public Nazz(List<Nazzy> nazzy, BigInteger data) {
+            super(
+                    new org.web3j.abi.datatypes.DynamicArray<>(Nazzy.class, nazzy),
+                    new org.web3j.abi.datatypes.generated.Uint256(data));
+            this.nazzy = nazzy;
             this.data = data;
         }
 
-        public Nazz(Naz naz, Uint256 data) {
-            super(naz, data);
-            this.naz = naz;
+        public Nazz(DynamicArray<Nazzy> nazzy, Uint256 data) {
+            super(nazzy, data);
+            this.nazzy = nazzy.getValue();
             this.data = data.getValue();
         }
     }

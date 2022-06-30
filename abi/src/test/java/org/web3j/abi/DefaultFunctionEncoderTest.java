@@ -14,20 +14,13 @@ package org.web3j.abi;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
 
 import org.junit.jupiter.api.Test;
 
-import org.web3j.abi.datatypes.Address;
-import org.web3j.abi.datatypes.Bool;
-import org.web3j.abi.datatypes.DynamicArray;
-import org.web3j.abi.datatypes.DynamicBytes;
-import org.web3j.abi.datatypes.DynamicStruct;
-import org.web3j.abi.datatypes.Function;
-import org.web3j.abi.datatypes.StaticStruct;
-import org.web3j.abi.datatypes.Type;
-import org.web3j.abi.datatypes.Uint;
-import org.web3j.abi.datatypes.Utf8String;
+import org.web3j.abi.datatypes.*;
 import org.web3j.abi.datatypes.generated.Bytes10;
 import org.web3j.abi.datatypes.generated.Uint256;
 import org.web3j.abi.datatypes.generated.Uint32;
@@ -54,6 +47,26 @@ public class DefaultFunctionEncoderTest {
         assertEquals(
                 "empty()",
                 DefaultFunctionEncoder.buildMethodSignature("empty", Collections.emptyList()));
+    }
+
+    @Test
+    public void testBuildMessageSignatureWithComplexTuple() {
+        AbiV2TestFixture.Nazz nazz =
+                new AbiV2TestFixture.Nazz(
+                        Arrays.asList(
+                                new AbiV2TestFixture.Nazzy(
+                                        Arrays.asList(
+                                                new AbiV2TestFixture.Foo("a", "b"),
+                                                new AbiV2TestFixture.Foo("c", "d"))),
+                                new AbiV2TestFixture.Nazzy(
+                                        Arrays.asList(
+                                                new AbiV2TestFixture.Foo("e", "f"),
+                                                new AbiV2TestFixture.Foo("g", "key")))),
+                        BigInteger.valueOf(100L));
+
+        assertEquals(
+                "someFunc((((string,string)[])[],uint256))",
+                FunctionEncoder.buildMethodSignature("someFunc", Arrays.asList(nazz)));
     }
 
     @Test
