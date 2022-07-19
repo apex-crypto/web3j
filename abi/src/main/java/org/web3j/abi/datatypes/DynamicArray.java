@@ -12,6 +12,8 @@
  */
 package org.web3j.abi.datatypes;
 
+import org.web3j.abi.Utils;
+
 import java.util.List;
 
 import org.web3j.abi.Utils;

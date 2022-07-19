@@ -401,7 +401,7 @@ public abstract class Contract extends ManagedTransaction {
                                 constructor);
             }
         } catch (JsonRpcError error) {
-            throw new TransactionException(error.getData().toString());
+            throw new TransactionException(error.getMessage() + ", data: " + error.getData());
         }
 
         if (!(receipt instanceof EmptyTransactionReceipt)

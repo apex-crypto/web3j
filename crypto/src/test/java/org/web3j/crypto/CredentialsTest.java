@@ -31,6 +31,12 @@ public class CredentialsTest {
         verify(credentials);
     }
 
+    @Test
+    public void testCredentialsFromECKeyPair_withOnlyPrivateKey() {
+        Credentials credentials = Credentials.create("0x" + SampleKeys.PRIVATE_KEY_STRING);
+        verify(credentials);
+    }
+
     private void verify(Credentials credentials) {
         assertEquals(credentials.getAddress(), (SampleKeys.ADDRESS));
         assertEquals(credentials.getEcKeyPair(), (SampleKeys.KEY_PAIR));
